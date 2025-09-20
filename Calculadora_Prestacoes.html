@@ -1,0 +1,437 @@
+html
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GNL Imobiliário - Calculadora de Prestações</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c 0%, #2c3e50 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 20px 15px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        
+        .lion-icon {
+            font-size: 36px;
+            margin-right: 12px;
+            color: #ffeaa7;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .logo-text {
+            text-align: center;
+        }
+        
+        .logo-name {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        .logo-subtitle {
+            font-size: 18px;
+            font-weight: 500;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-top: 10px;
+        }
+        
+        .calculator-container {
+            padding: 20px 15px;
+        }
+        
+        .form-columns {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 15px;
+        }
+        
+        input[type="number"] {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e0e6ed;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        
+        input[type="number"]:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        
+        .calculate-btn {
+            background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 600;
+            width: 100%;
+            margin: 15px 0 25px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .calculate-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 10px rgba(52, 152, 219, 0.4);
+        }
+        
+        .results {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 15px;
+            border-left: 5px solid #3498db;
+            display: none;
+        }
+        
+        .results h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 20px;
+        }
+        
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #eaeaea;
+            font-size: 15px;
+        }
+        
+        .result-value {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .final-result {
+            margin-top: 20px;
+            padding: 18px;
+            background: #2c3e50;
+            color: white;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .explanation {
+            background: #e8f4fc;
+            border-radius: 10px;
+            padding: 18px;
+            margin-top: 25px;
+            font-size: 15px;
+        }
+        
+        .explanation h3 {
+            color: #2c3e50;
+            margin-bottom: 12px;
+            font-size: 17px;
+        }
+        
+        .explanation p {
+            margin-bottom: 10px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 18px;
+            background: #2c3e50;
+            color: white;
+            font-size: 13px;
+        }
+        
+        .watermark {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 11px;
+        }
+        
+        .instructions {
+            background: #fff8e1;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #ffc107;
+            font-size: 14px;
+        }
+        
+        .instructions h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .instructions i {
+            margin-right: 8px;
+            color: #3498db;
+        }
+
+        @media (min-width: 768px) {
+            body {
+                padding: 20px;
+            }
+            
+            .container {
+                max-width: 600px;
+            }
+            
+            .form-columns {
+                flex-direction: row;
+                gap: 20px;
+            }
+            
+            .form-column {
+                flex: 1;
+            }
+            
+            header {
+                padding: 25px;
+            }
+            
+            .calculator-container {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <div class="logo">
+                    <div class="lion-icon"><i class="fas fa-lion"></i></div>
+                    <div class="logo-text">
+                        <div class="logo-name">GONÇALO LESTRO</div>
+                        <div class="logo-subtitle">IMOBILIÁRIO</div>
+                    </div>
+                </div>
+            </div>
+            <h1>Calculadora de Prestações Bancárias</h1>
+            <p class="subtitle">Calcule a sua prestação mensal de empréstimo</p>
+            <div class="watermark">© 2023 GNL Imobiliário</div>
+        </header>
+        
+        <div class="calculator-container">
+            <div class="instructions">
+                <h3><i class="fas fa-mobile-alt"></i> Como usar:</h3>
+                <p>1. Preencha os valores abaixo</p>
+                <p>2. Clique em "Calcular Prestação"</p>
+                <p>3. Veja os resultados na parte inferior</p>
+            </div>
+            
+            <div class="form-columns">
+                <div class="form-column">
+                    <div class="input-group">
+                        <label for="loan-amount">Valor do Empréstimo (€):</label>
+                        <input type="number" id="loan-amount" min="0" placeholder="Ex: 150000" value="150000">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="interest-rate">Taxa de Juro Anual (%):</label>
+                        <input type="number" id="interest-rate" min="0" step="0.01" placeholder="Ex: 4.5" value="4.5">
+                    </div>
+                </div>
+                
+                <div class="form-column">
+                    <div class="input-group">
+                        <label for="loan-term">Prazo (anos):</label>
+                        <input type="number" id="loan-term" min="1" placeholder="Ex: 30" value="30">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="monthly-payment">Prestação Mensal (€):</label>
+                        <input type="text" id="monthly-payment" readonly placeholder="Resultado aparecerá aqui">
+                    </div>
+                </div>
+            </div>
+            
+            <button class="calculate-btn" id="calculate-button">
+                <i class="fas fa-calculator"></i> Calcular Prestação
+            </button>
+            
+            <div class="results" id="results">
+                <h2>Detalhes do Cálculo</h2>
+                
+                <div class="result-item">
+                    <span>Valor do Empréstimo:</span>
+                    <span class="result-value" id="result-loan-amount">0,00 €</span>
+                </div>
+                
+                <div class="result-item">
+                    <span>Taxa de Juro Anual:</span>
+                    <span class="result-value" id="result-interest-rate">0,00 %</span>
+                </div>
+                
+                <div class="result-item">
+                    <span>Taxa de Juro Mensal:</span>
+                    <span class="result-value" id="result-monthly-interest">0,00 %</span>
+                </div>
+                
+                <div class="result-item">
+                    <span>Prazo Total:</span>
+                    <span class="result-value" id="result-term">0 anos (0 meses)</span>
+                </div>
+                
+                <div class="result-item">
+                    <span>Total a Pagar:</span>
+                    <span class="result-value" id="result-total-payment">0,00 €</span>
+                </div>
+                
+                <div class="result-item">
+                    <span>Total de Juros:</span>
+                    <span class="result-value" id="result-total-interest">0,00 €</span>
+                </div>
+                
+                <div class="final-result">
+                    Prestação Mensal: <span id="final-result">0.00 €</span>
+                </div>
+            </div>
+            
+            <div class="explanation">
+                <h3>Como interpretar o resultado:</h3>
+                <p>A <strong>prestação mensal</strong> é o valor que pagará todos os meses ao banco durante o prazo do empréstimo.</p>
+                <p>Este cálculo utiliza a fórmula de amortização de empréstimos, que distribui igualmente o capital e juros ao longo do tempo.</p>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2023 Gonçalo Lestro Imobiliário - Todos os direitos reservados</p>
+            <p>Calculadora optimizada para telemóvel</p>
+        </footer>
+    </div>
+
+    <script>
+        // Função para calcular a prestação mensal
+        function calculateMonthlyPayment() {
+            // Obter valores dos inputs
+            const loanAmount = parseFloat(document.getElementById('loan-amount').value) || 0;
+            const annualInterestRate = parseFloat(document.getElementById('interest-rate').value) || 0;
+            const loanTermYears = parseFloat(document.getElementById('loan-term').value) || 0;
+            
+            // Converter para valores mensais
+            const monthlyInterestRate = (annualInterestRate / 100) / 12;
+            const loanTermMonths = loanTermYears * 12;
+            
+            // Calcular a prestação mensal usando a fórmula de amortização
+            let monthlyPayment = 0;
+            if (monthlyInterestRate === 0) {
+                // Se não há juros, dividir igualmente
+                monthlyPayment = loanAmount / loanTermMonths;
+            } else {
+                // Fórmula padrão de amortização
+                monthlyPayment = loanAmount * 
+                    (monthlyInterestRate * Math.pow(1 + monthlyInterestRate, loanTermMonths)) / 
+                    (Math.pow(1 + monthlyInterestRate, loanTermMonths) - 1);
+            }
+            
+            // Calcular totais
+            const totalPayment = monthlyPayment * loanTermMonths;
+            const totalInterest = totalPayment - loanAmount;
+            
+            // Exibir resultados
+            document.getElementById('monthly-payment').value = monthlyPayment.toFixed(2) + ' €';
+            document.getElementById('result-loan-amount').textContent = loanAmount.toFixed(2) + ' €';
+            document.getElementById('result-interest-rate').textContent = annualInterestRate.toFixed(2) + ' %';
+            document.getElementById('result-monthly-interest').textContent = (monthlyInterestRate * 100).toFixed(4) + ' %';
+            document.getElementById('result-term').textContent = loanTermYears + ' anos (' + loanTermMonths + ' meses)';
+            document.getElementById('result-total-payment').textContent = totalPayment.toFixed(2) + ' €';
+            document.getElementById('result-total-interest').textContent = totalInterest.toFixed(2) + ' €';
+            document.getElementById('final-result').textContent = monthlyPayment.toFixed(2) + ' €';
+            
+            // Mostrar resultados
+            document.getElementById('results').style.display = 'block';
+            
+            // Rolar suavemente para os resultados
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Adicionar event listener para o botão
+        document.getElementById('calculate-button').addEventListener('click', calculateMonthlyPayment);
+        
+        // Calcular automaticamente ao carregar a página
+        window.addEventListener('load', function() {
+            // Pequeno atraso para garantir que o DOM está totalmente carregado
+            setTimeout(calculateMonthlyPayment, 100);
+        });
+        
+        // Adicionar event listeners para os inputs para recalcular quando alterados
+        const inputs = document.querySelectorAll('input[type="number"]');
+        inputs.forEach(input => {
+            input.addEventListener('input', calculateMonthlyPayment);
+        });
+    </script>
+</body>
+</html>
